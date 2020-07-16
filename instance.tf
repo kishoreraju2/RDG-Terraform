@@ -82,7 +82,7 @@ CREDENTIALS_PAGE_PASSWORD=Admin123" >> /home/opc/silentInstall.response
 
 cd /home/opc
 wget $RDG_URL
-unzip datagateway-linux-5.6.0.zip /home/opc
+unzip /home/opc/datagateway-linux-5.6.0.zip 
 
 /home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc
 sleep 5
