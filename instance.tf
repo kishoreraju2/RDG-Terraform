@@ -84,11 +84,11 @@ cd /home/opc
 wget $RDG_URL
 unzip /home/opc/datagateway-linux-5.6.0.zip 
 
-/home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc
+/home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc >> /home/opc/install
 sleep 90
-/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh
+/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh >> /home/opc/userdata.start
 sleep 30
-/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/status.sh
+/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/status.sh >> /home/opc/userdata.start
 if [ $? -ne 0 ]; then
    printf "Failure" >> /home/opc/userdata.start
 else
