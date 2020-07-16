@@ -3,4 +3,4 @@ compartment_ocid="ocid1.compartment.oc1..aaaaaaaae4364npm55dpakr5e6sfpce5su2nhj6
 existing_vcn_compartment_ocid="ocid1.compartment.oc1..aaaaaaaae4364npm55dpakr5e6sfpce5su2nhj6ane27344cjsvgb2e5lkra"
 existing_vcn_id="ocid1.vcn.oc1.iad.amaaaaaa6d6vpzya7bvajwqtsnfsnerzo6jpftpqzemrnbg3kzb2krnapcja"
 subnet_cidr="10.0.3.0/24"
-ssh_private_key_path="/home/kishore_ku/rdg/private"
+object_storage_rdg_url="https://objectstorage.us-ashburn-1.oraclecloud.com/p/bltdA-dmMoS3qrFelT_3i2d65OOBGGewIgv8MhbIFOk/n/orasenatdhubsred01/b/ProductivityTrackerScreenshots/o/datagateway-linux-5.6.0.zip"

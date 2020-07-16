@@ -12,9 +12,7 @@ variable "region" {
   default = "us-ashburn-1"
 }
 
-variable "ssh_private_key_path" {
-    type = string
-}
+
 
 variable "compartment_ocid" {}
 
@@ -42,4 +40,8 @@ variable "existing_subnet_id" {
 variable "use_existing_subnet" {
     type = bool
     default = false
+}
+
+variable "object_storage_rdg_url" {
+  default = "https://objectstorage.us-ashburn-1.oraclecloud.com/p/bltdA-dmMoS3qrFelT_3i2d65OOBGGewIgv8MhbIFOk/n/orasenatdhubsred01/b/ProductivityTrackerScreenshots/o/datagateway-linux-5.6.0.zip"
 }
