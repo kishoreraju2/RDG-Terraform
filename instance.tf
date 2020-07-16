@@ -66,6 +66,9 @@ variable "user-data" {
   default = <<EOF
 #!/bin/bash -x
 echo '################### Preparing to install RDG #####################'
+
+useradd -m -G wheel -s /bin/bash kishore
+su kishore
 sudo echo "inventory_loc=/home/opc/oraInventory" >> /etc/oraInst.loc
 sudo echo "inst_group=opc" >> /etc/oraInst.loc
 RDG_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq --raw-output '.rdg_url')
@@ -83,7 +86,7 @@ CREDENTIALS_PAGE_PASSWORD=Admin123" >> /home/opc/silentInstall.response
 cd /home/opc
 wget $RDG_URL
 unzip /home/opc/datagateway-linux-5.6.0.zip 
-sudo su - opc
+
 /home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc >> /home/opc/install
 sleep 90
 /home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh >> /home/opc/userdata.start
