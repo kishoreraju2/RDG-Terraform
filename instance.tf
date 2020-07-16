@@ -83,7 +83,7 @@ CREDENTIALS_PAGE_PASSWORD=Admin123" >> /home/opc/silentInstall.response
 cd /home/opc
 wget $RDG_URL
 unzip /home/opc/datagateway-linux-5.6.0.zip 
-
+sudo su - opc
 /home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc >> /home/opc/install
 sleep 90
 /home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh >> /home/opc/userdata.start
