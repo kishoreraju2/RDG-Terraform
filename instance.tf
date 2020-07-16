@@ -15,6 +15,10 @@ resource "oci_core_instance" "app-instance" {
     source_id   = local.images[var.region]
   }
 
+  extended_metadata = {
+    rdg_url = var.object_storage_rdg_url
+  }
+
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
@@ -64,7 +68,7 @@ variable "user-data" {
 echo '################### Preparing to install RDG #####################'
 sudo echo "inventory_loc=/home/opc/oraInventory" >> /etc/oraInst.loc
 sudo echo "inst_group=opc" >> /etc/oraInst.loc
-
+RDG_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq --raw-output '.rdg_url')
 sudo echo "[ENGINE]
 
 #DO NOT CHANGE THIS.
@@ -77,7 +81,7 @@ CREDENTIALS_PAGE_ADMIN_USERNAME=admin
 CREDENTIALS_PAGE_PASSWORD=Admin123" >> /home/opc/silentInstall.response
 
 cd /home/opc
-wget ${var.object_storage_rdg_url}
+wget $RDG_URL
 unzip datagateway-linux-5.6.0.zip /home/opc
 
 /home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc
