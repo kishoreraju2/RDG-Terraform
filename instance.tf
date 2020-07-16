@@ -85,7 +85,7 @@ wget $RDG_URL
 unzip /home/opc/datagateway-linux-5.6.0.zip 
 
 /home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc
-sleep 5
+sleep 90
 /home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh
 sleep 30
 /home/opc/Oracle/Middleware/Oracle_Home/domain/bin/status.sh
