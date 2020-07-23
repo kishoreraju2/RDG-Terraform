@@ -4,5 +4,5 @@ data "oci_identity_availability_domain" "ad" {
 }
 
 output "ad" {
-    value = oci_identity_availability_domain.ad.name
+    value = data.oci_identity_availability_domain.ad.name
 }
