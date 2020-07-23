@@ -22,7 +22,6 @@ resource "oci_core_instance" "app-instance" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data           = base64encode(var.user-data)
   }
 
   timeouts {
@@ -33,74 +32,7 @@ resource "oci_core_instance" "app-instance" {
 }
 
 
-# resource "null_resource" "remote-exec" {
-#   depends_on = [oci_core_instance.app-instance]
 
-#   provisioner "remote-exec" {
-#     connection {
-#       agent       = false
-#       timeout     = "30m"
-#       host        = oci_core_instance.app-instance.public_ip
-#       user        = "opc"
-#       private_key = file(var.ssh_private_key_path)
-#     }
-
-#     inline = [
-#       "echo 'inventory_loc=/home/opc/oraInventory\ninst_group=opc' >> /home/opc/oraInst.loc",
-#       "sudo cp /home/opc/oraInst.loc /etc/oraInst.loc",
-#       "echo '[ENGINE]\n\n#DO NOT CHANGE THIS.\nResponse File Version=1.0.0.0.0\n\n[GENERIC]\nORACLE_HOME=/home/opc/Oracle/Middleware/Oracle_Home\nSELECT_RD_VERSION_RADIO_V1=false\nCREDENTIALS_PAGE_ADMIN_USERNAME=admin\nCREDENTIALS_PAGE_PASSWORD=Admin123' >> /home/opc/silentInstall.response",
-#         "cd /home/opc",
-#         "wget https://objectstorage.us-ashburn-1.oraclecloud.com/p/bltdA-dmMoS3qrFelT_3i2d65OOBGGewIgv8MhbIFOk/n/orasenatdhubsred01/b/ProductivityTrackerScreenshots/o/datagateway-linux-5.6.0.zip",
-#         "unzip /home/opc/datagateway-linux-5.6.0.zip",
-#         "/home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc", 
-# "sleep 5",        
-# "/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh",
-#        "sleep 60",
-#  "/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/status.sh",
-
-#     ]
-#   }
-# }
-
-variable "user-data" {
-  default = <<EOF
-#!/bin/bash -x
-echo '################### Preparing to install RDG #####################'
-
-useradd -m -G wheel -s /bin/bash kishore
-su kishore
-sudo echo "inventory_loc=/home/opc/oraInventory" >> /etc/oraInst.loc
-sudo echo "inst_group=opc" >> /etc/oraInst.loc
-RDG_URL=$(curl -L http://169.254.169.254/opc/v1/instance/metadata | jq --raw-output '.rdg_url')
-sudo echo "[ENGINE]
-
-#DO NOT CHANGE THIS.
-Response File Version=1.0.0.0.0
-
-[GENERIC]
-ORACLE_HOME=/home/opc/Oracle/Middleware/Oracle_Home
-SELECT_RD_VERSION_RADIO_V1=false
-CREDENTIALS_PAGE_ADMIN_USERNAME=admin
-CREDENTIALS_PAGE_PASSWORD=Admin123" >> /home/opc/silentInstall.response
-
-cd /home/opc
-wget $RDG_URL
-unzip /home/opc/datagateway-linux-5.6.0.zip 
-
-/home/opc/datagateway-linux-5.6.0.bin -silent -responseFile /home/opc/silentInstall.response -invPtrLoc /etc/oraInst.loc >> /home/opc/install
-sleep 90
-/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/startJetty.sh >> /home/opc/userdata.start
-sleep 30
-/home/opc/Oracle/Middleware/Oracle_Home/domain/bin/status.sh >> /home/opc/userdata.start
-if [ $? -ne 0 ]; then
-   printf "Failure" >> /home/opc/userdata.start
-else
-   printf "Successful" >> /home/opc/userdata.start
-fi
-
-echo '################### Finished #######################'
-EOF
-}
 
 // https://docs.cloud.oracle.com/iaas/images/image/4e74174f-0b44-4447-bb09-dc05b23cf3ee/
 // Oracle-Linux-7.7-2019.08.28-0
